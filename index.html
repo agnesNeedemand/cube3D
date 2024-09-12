@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        background-color: #ffffff;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r57/three.min.js"></script>
+    <script>
+      var camera, scene, renderer;
+      var geometry,
+        material,
+        mesh = [];
+      var group = new THREE.Object3D();
+      var tab = [
+        [1, 1, 1],
+        [1, 0, 1],
+        [1, 1, 1],
+        [1, 0, 1],
+      ];
+
+      var init = function () {
+        renderer = new THREE.CanvasRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        camera = new THREE.PerspectiveCamera(
+          75,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000
+        );
+        camera.position.z = 500;
+
+        scene = new THREE.Scene();
+        for (var i = 0; i < tab.length; i++) {
+          for (var j = 0; j < tab[0].length; j++) {
+            if (tab[i][j] != 0) {
+              geometry = new THREE.CubeGeometry(50, 50, 50);
+              var data;
+              if (tab[i][j] == 3) {
+                data = {
+                  color: 0x0000ff,
+                  wireframe: false,
+                  wireframeLinewidth: 2,
+                };
+              } else {
+                data = {
+                  color: 0xa9d0f5,
+                  wireframe: false,
+                  wireframeLinewidth: 2,
+                };
+              }
+              material = new THREE.MeshBasicMaterial(data);
+              mesh[j + i * tab.length] = new THREE.Mesh(geometry, material);
+              mesh[j + i * tab.length].position.y -= i * 50;
+              mesh[j + i * tab.length].position.x += j * 50;
+              group.add(mesh[j + i * tab.length]);
+
+              //http://mrdoob.com/projects/htmleditor/
+            }
+          }
+        }
+
+        scene.add(group);
+      };
+
+      var animate = function () {
+        requestAnimationFrame(animate);
+
+        //for (var i=0; i< tab.length; i++){
+        //group.rotation.x = Date.now() * 0.0001;
+        group.rotation.y = Date.now() * 0.001;
+        //}
+
+        renderer.render(scene, camera);
+      };
+
+      init();
+      animate();
+    </script>
+  </body>
+</html>
