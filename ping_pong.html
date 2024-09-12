@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>balle qui rebondie</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <canvas id="mon_canvas" width="500" height="500">
+      votre navigateur ne supporte pas canvas
+    </canvas>
+    <script>
+      window.onload = function () {
+        var canvas = document.getElementById("mon_canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = 500;
+        canvas.heigth = 300;
+        var myInterval = setInterval(animate, 1000 / 30);
+        var rayon = 10;
+        var xPos = 10 + rayon;
+        var yPos = 10 + rayon;
+        var bordDroit = canvas.width - 2;
+        var bordBas = canvas.heigth - 2;
+        var vitesseX = 3;
+        var vitesseY = 3;
+        context.lineWidth = 4;
+        context.strokeRect(0, 0, 500, 300);
+        function animate() {
+          context.clearRect(2, 2, canvas.width - 4, canvas.heigth - 2);
+          context.beginPath();
+          context.arc(xPos, yPos, rayon, 0, Math.PI * 2);
+          context.fill();
+          context.closePath();
+          if (xPos >= bordDroit - rayon || xPos <= 2 + rayon) {
+            vitesseX *= -1;
+          }
+          if (yPos >= bordBas - rayon || yPos <= 2 + rayon) {
+            vitesseY *= -1;
+          }
+          xPos += vitesseX;
+          yPos += vitesseY;
+        }
+      };
+    </script>
+  </body>
+</html>
